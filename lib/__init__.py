@@ -1,5 +1,5 @@
 
-def randPortf(cnt=5):
+def randPortf(cnt):
     """
     Генерация случайного портфеля
     
