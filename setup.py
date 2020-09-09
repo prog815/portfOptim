@@ -5,7 +5,7 @@ import portfOptim
 
 setup(
     name='portfOptim',
-    version='0.0.2',
+    version='0.0.3',
     description='Библиотека оптимизации финансовых портфелей',
     packages=find_packages(),
     long_description=open(join(dirname(__file__), 'README.md')).read(),
