@@ -51,3 +51,49 @@ def riskPortf(r,cov):
     """
     import numpy as np
     return np.sqrt(np.matmul(np.matmul(r,cov),r))
+
+# ------------------------------------------------------
+
+def portfSharpOptim(doh,cov):
+    """
+    Поиск оптимизированного портфеля
+    (на основе https://www.mlq.ai/python-for-finance-portfolio-optimization/)
+    
+    Аргументы:
+    doh - массив доходностей каждого инструмента в портфеле
+    cov - ковариационная матрица инструментов в портфеле
+    
+    Возвращает массив весов портфеля
+    
+    Пример:
+    portfSharpOptim(dohMean.values,cov.values)
+    >>> array([4.07396945e-01, 2.64008207e-01, 2.39608680e-17, 2.03830008e-17,
+       8.89045781e-18, 3.28594848e-01])
+    """
+    import numpy as np
+    from scipy.optimize import minimize
+
+    l = cov.shape[1]
+
+    # проверка сумм долей портфеля на соотвестветствие 1-це
+    def check_sum(weights): 
+	    return np.sum(weights) - 1
+
+    # отрицательный коэффицицент Шарпа
+    def kSharpe(weights): 
+	    return -dohPortf(weights,doh)/riskPortf(weights,cov)
+
+    # накладываем условия
+    constr = ({'type':'eq','fun':check_sum})
+
+    # границы 
+    bounds = [(0,1)] * l
+    #print(bounds)
+
+    # начальные значения
+    w0 = [1.0/l] * l
+
+    # оптимизируем
+    res = minimize(kSharpe, w0, method='SLSQP', bounds=bounds, constraints=constr)
+
+    return res.x
