@@ -54,6 +54,23 @@ def riskPortf(r,cov):
 
 # ------------------------------------------------------
 
+def koefSharp(weights,Doh,Cov):
+	"""
+	Расчет коэффициента Шарпа
+	
+	Аргументы:
+	weights - веса каждого инструмента в портфеле
+	Doh - массив доходностей каждого инструмента в портфеле
+	Cov - ковариационная матрица инструментов в портфеле
+	
+	Возвращает число.
+	
+	"""
+	import numpy as np
+	return np.matmul(weights,Doh)/np.sqrt(np.matmul(np.matmul(np.transpose(weights),Cov),weights))
+
+# ------------------------------------------------------
+
 def portfSharpOptim(doh,cov):
     """
     Поиск оптимизированного портфеля
